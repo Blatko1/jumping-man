@@ -2,7 +2,7 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const CANVAS_WIDTH = canvas.width;
 const CANVAS_HEIGHT = canvas.height;
-const spritesImg = document.getElementById("sprites");
+const jump1 = document.getElementById("jump1");
 const gravitational_accel = 1;
 
 let pressed_S = false;
@@ -37,7 +37,7 @@ function drawPlayer() {
     ctx.beginPath();
     ctx.arc(player_x, player_y, 10, 0, 2*Math.PI, false);
     ctx.fill();
-    ctx.drawImage(spritesImg, 560, 352, 86, 87, player_x - 50/2, player_y - 50, 50, 50);
+    ctx.drawImage(jump1, player_x - jump1.width / 4, player_y - jump1.height/2, jump1.width / 2, jump1.height / 2);
 }
 
 function clearScreen() {
