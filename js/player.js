@@ -1,9 +1,14 @@
 class Player {
-  constructor(pos, speed, jumpingSprites, walkingSprites) {
-    this.pos = pos;
-    this.speed = speed;
-    this.velocity_y = 0;
+  constructor(pos, jumpSpeed, jumpingSprites, walkingSprites) {
     this.pressed_jump = false;
+    this.pressed_left = false;
+    this.pressed_right = false;
+    this.pressed_down = false;
+    
+    this.pos = pos;
+    this.moveSpeed = 350
+    this.jumpSpeed = jumpSpeed;
+    this.velocity_y = 0;
     this.is_in_air = true;
     this.jump_height = 20;
     this.scale = 0.7;
@@ -29,6 +34,9 @@ class Player {
       this.is_in_air = true
     }
     if (this.pos.y > CANVAS_HEIGHT + 200) {
+      highScore = Math.max(world.score, highScore)
+      lastScore = world.score
+      world.score = 0
       this.pos.y = -200
     }
 
@@ -41,8 +49,8 @@ class Player {
       }
     }
     let lastY = this.pos.y
-    this.pos.y -= this.velocity_y * deltaTime * this.speed;
-    this.velocity_y -= GRAVITY * deltaTime * this.speed;
+    this.pos.y -= this.velocity_y * deltaTime * this.jumpSpeed;
+    this.velocity_y -= GRAVITY * deltaTime * this.jumpSpeed;
 
     if (tileAt != null) {
       if (
@@ -75,6 +83,21 @@ class Player {
         player.is_in_air = true;
         player.velocity_y += this.jump_height;
       }
+    }
+    if (this.pressed_right) {
+      this.pos.x += this.moveSpeed * deltaTime
+      if (this.pos.x > CANVAS_WIDTH - 50) {
+        this.pos.x = CANVAS_WIDTH - 50
+      }
+    }
+    if (this.pressed_left) {
+      this.pos.x -= this.moveSpeed * deltaTime
+      if (this.pos.x < 50) {
+        this.pos.x = 50
+      }
+    }
+    if (this.pressed_down) {
+      this.velocity_y -= GRAVITY * this.jumpSpeed * deltaTime * 1.5
     }
   }
 }

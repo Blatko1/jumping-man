@@ -7,13 +7,19 @@ class Tile {
 
 class World {
   constructor(groundTexture, backgrounds, groundScrollSpeed) {
+    this.score = 0
+
     this.tiles = [];
-    this.minWidthFactor = 0.9;
+    this.defaultMinWidthFactor = 0.9
+    this.minWidthFactor = this.defaultMinWidthFactor;
     this.randWidthFactor = 1.0 - this.minWidthFactor;
-    this.minHoleWidth = 60;
-    this.maxHoleWidth = 150;
+    this.defaultMinHoleWidth = 60
+    this.defaultMaxHoleWidth = 160
+    this.minHoleWidth = this.defaultMinHoleWidth;
+    this.maxHoleWidth = this.defaultMaxHoleWidth;
 
     this.groundOffset = 30;
+    this.defaultGroundScrollSpeed = groundScrollSpeed;
     this.groundScrollSpeed = groundScrollSpeed;
     this.groundTex = groundTexture;
 
@@ -26,15 +32,20 @@ class World {
 
   update() {
     // Generate or delete ground tiles
+    this.minWidthFactor = Math.min(1.0, (this.defaultMinWidthFactor + 5) / this.score)
+    this.minHoleWidth = this.defaultMinHoleWidth + this.score * 1.5
+    this.maxHoleWidth = this.defaultMaxHoleWidth + this.score * 1.5
     this.randWidthFactor = 1.0 - this.minWidthFactor;
     if (this.tiles.length != 0) {
       this.generateTiles(this.tiles[this.tiles.length - 1].x2)
-      if (this.tiles[0].x2 < 0) this.tiles.shift();
+      if (this.tiles[0].x2 < 0) {this.tiles.shift() 
+      this.score++}
     } else {
       this.generateTiles(0)
     }
 
     // Move the ground tiles
+    this.groundScrollSpeed = this.defaultGroundScrollSpeed + this.score * 15
     for (let i = 0; i < this.tiles.length; i++) {
       this.tiles[i].x1 -= deltaTime * this.groundScrollSpeed;
       this.tiles[i].x2 -= deltaTime * this.groundScrollSpeed;
@@ -92,6 +103,12 @@ class World {
         texHeight
       );
     }
+    ctx.save()
+    ctx.font = "30px serif";
+    ctx.fillText("Score: " + this.score, CANVAS_WIDTH - 200, 40);
+    ctx.fillText("High Score: " + highScore, CANVAS_WIDTH - 240, 80);
+    ctx.fillText("Last Score: " + lastScore, CANVAS_WIDTH - 235, 120);
+    ctx.restore()
   }
 
   alternateBackground() {

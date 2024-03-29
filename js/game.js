@@ -7,6 +7,9 @@ const ASPECT_RATIO = CANVAS_WIDTH / CANVAS_HEIGHT
 const GRAVITY = 1;
 const GROUND_HEIGHT = CANVAS_HEIGHT * 0.7;
 
+let lastScore = 0
+let highScore = 0
+
 const jumpSprites = document.getElementsByClassName("jumpSprite");
 let player = new Player({ x: 100, y: -400 }, 30, jumpSprites, null);
 
@@ -69,6 +72,12 @@ function keyDown(event) {
   if (key == " ") {
     event.preventDefault();
     player.pressed_jump = true;
+  } else if (key == "d") {
+    player.pressed_right = true
+  } else if (key == "a") {
+    player.pressed_left = true
+  } else if (key == "s") {
+    player.pressed_down = true
   }
 }
 
@@ -76,6 +85,12 @@ function keyUp(event) {
   let key = event.key.toLowerCase();
   if (key == " ") {
     player.pressed_jump = false;
+  } else if (key == "d") {
+    player.pressed_right = false
+  } else if (key == "a") {
+    player.pressed_left = false
+  } else if (key == "s") {
+    player.pressed_down = false
   }
 }
 
