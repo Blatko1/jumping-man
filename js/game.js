@@ -69,27 +69,30 @@ canvas.addEventListener('mouseup', function() { player.pressed_jump = false; }, 
 
 function keyDown(event) {
   let key = event.key.toLowerCase();
-  if (key == " ") {
+  if (key == " " || event.keyCode == 38) {
     event.preventDefault();
     player.pressed_jump = true;
-  } else if (key == "d") {
+  } else if (key == "d" || event.keyCode == 39) {
+    event.preventDefault();
     player.pressed_right = true
-  } else if (key == "a") {
+  } else if (key == "a" || event.keyCode == 37) {
+    event.preventDefault();
     player.pressed_left = true
-  } else if (key == "s") {
+  } else if (key == "s" || event.keyCode == 40) {
+    event.preventDefault();
     player.pressed_down = true
   }
 }
 
 function keyUp(event) {
   let key = event.key.toLowerCase();
-  if (key == " ") {
+  if (key == " " || event.keyCode == 38) {
     player.pressed_jump = false;
-  } else if (key == "d") {
+  } else if (key == "d" || event.keyCode == 39) {
     player.pressed_right = false
-  } else if (key == "a") {
+  } else if (key == "a" || event.keyCode == 37) {
     player.pressed_left = false
-  } else if (key == "s") {
+  } else if (key == "s" || event.keyCode == 40) {
     player.pressed_down = false
   }
 }
