@@ -8,45 +8,30 @@ class Tile {
 class World {
   constructor(groundTexture, backgrounds, groundScrollSpeed) {
     this.tiles = [];
-    this.minWidthFactor = 0.7;
+    this.minWidthFactor = 0.2;
     this.randWidthFactor = 1.0 - this.minWidthFactor;
-    this.holeWidth = 100;
+    this.minHoleWidth = 60;
+    this.maxHoleWidth = 150;
+
     this.groundOffset = 30;
     this.groundScrollSpeed = groundScrollSpeed;
     this.groundTex = groundTexture;
+
     this.currentBgIndex = 0
     this.lastBgIndex = null
     this.bgAlpha = 1.0
     this.transitionSpeed = 0.3
     this.backgrounds = backgrounds;
-    //this.groundTex.onload = function () {
-    //  th
-    //}
   }
 
   update() {
     // Generate or delete ground tiles
     this.randWidthFactor = 1.0 - this.minWidthFactor;
     if (this.tiles.length != 0) {
+      this.generateTiles(this.tiles[this.tiles.length - 1].x2)
       if (this.tiles[0].x2 < 0) this.tiles.shift();
-    }
-    while (this.tiles.length < 7) {
-      let last_tile_x = null;
-      if (this.tiles.length == 0) {
-        last_tile_x = -this.holeWidth;
-      } else {
-        last_tile_x = this.tiles[this.tiles.length - 1].x2;
-      }
-      let new_tile_x1 = last_tile_x + this.holeWidth;
-      let new_tile_x2 =
-        new_tile_x1 +
-        Math.min(
-          this.minWidthFactor * this.groundTex.width +
-            Math.random() * this.groundTex.width * this.randWidthFactor,
-          this.groundTex.width
-        );
-      let new_tile = new Tile(new_tile_x1, new_tile_x2);
-      this.tiles.push(new_tile);
+    } else {
+      this.generateTiles(-this.maxHoleWidth)
     }
 
     // Move the ground tiles
@@ -60,6 +45,20 @@ class World {
         if (this.bgAlpha == 1.0) {
             this.lastBgIndex = null
         }
+    }
+  }
+
+  generateTiles(last_x) {
+    let lastX = last_x
+    while (this.tiles.length < 7) {
+      let new_tile_x1 = lastX + Math.min(this.maxHoleWidth, Math.random() * (this.maxHoleWidth - this.minHoleWidth) + this.minHoleWidth);
+      let new_tile_x2 =
+        new_tile_x1 +
+          this.minWidthFactor * this.groundTex.width +
+            Math.random() * this.groundTex.width * this.randWidthFactor;
+      let new_tile = new Tile(new_tile_x1, new_tile_x2);
+      this.tiles.push(new_tile);
+      lastX = new_tile_x2
     }
   }
 

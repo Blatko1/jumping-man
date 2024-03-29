@@ -1,10 +1,9 @@
-let pressed_space = false;
-
 class Player {
   constructor(pos, speed, jumpingSprites, walkingSprites) {
     this.pos = pos;
     this.speed = speed;
     this.velocity_y = 0;
+    this.pressed_jump = false
     this.is_in_air = true;
     this.jump_height = 20;
     this.scale = 0.7;
@@ -45,28 +44,11 @@ class Player {
   }
 
   process_input() {
-    if (pressed_space) {
+    if (this.pressed_jump) {
       if (!this.is_in_air) {
         player.is_in_air = true;
         player.velocity_y += this.jump_height;
       }
     }
-  }
-}
-
-document.body.addEventListener("keydown", keyDown);
-document.body.addEventListener("keyup", keyUp);
-
-function keyDown(event) {
-  let key = event.key.toLowerCase();
-  if (key == " ") {
-    pressed_space = true;
-  }
-}
-
-function keyUp(event) {
-  let key = event.key.toLowerCase();
-  if (key == " ") {
-    pressed_space = false;
   }
 }

@@ -1,4 +1,5 @@
 const canvas = document.getElementById("canvas");
+canvas.focus()
 const ctx = canvas.getContext("2d");
 const CANVAS_WIDTH = canvas.width;
 const CANVAS_HEIGHT = canvas.height;
@@ -7,11 +8,11 @@ const GRAVITY = 1;
 const GROUND_HEIGHT = CANVAS_HEIGHT * 0.7;
 
 const jumpSprites = document.getElementsByClassName("jumpSprite");
-let player = new Player({ x: 100, y: 100 }, 30, jumpSprites, null);
+let player = new Player({ x: 100, y: -400 }, 30, jumpSprites, null);
 
 const groundTexture = document.getElementById("ground");
 const backgrounds = document.getElementsByClassName("background");
-let world = new World(groundTexture, backgrounds, 200);
+let world = new World(groundTexture, backgrounds, 300);
 
 let lastTime = performance.now();
 let deltaTime = 1;
@@ -56,5 +57,39 @@ function changeBackground() {
   world.alternateBackground()
 }
 
-mainLoop();
+canvas.addEventListener("keydown", keyDown, false);
+canvas.addEventListener("keyup", keyUp, false);
+canvas.addEventListener("touchstart", onTouchStart);
+canvas.addEventListener("touchend", onTouchEnd);
+canvas.addEventListener('mousedown', function() { player.pressed_jump = true; }, false);
+canvas.addEventListener('mouseup', function() { player.pressed_jump = false; }, false);
+
+function keyDown(event) {
+  let key = event.key.toLowerCase();
+  if (key == " ") {
+    event.preventDefault();
+    player.pressed_jump = true;
+  }
+}
+
+function keyUp(event) {
+  let key = event.key.toLowerCase();
+  if (key == " ") {
+    player.pressed_jump = false;
+  }
+}
+
+function onTouchStart(event) {
+  if (event.touches[0]) {
+    player.pressed_jump = true;
+  }
+}
+
+function onTouchEnd(event) {
+  if (event.changedTouches[0]) {
+    player.pressed_jump = false;
+  }
+}
+
+document.body.onload = function(){mainLoop()}
 setInterval(changeBackground, Math.random() * 5000 + 5000)
