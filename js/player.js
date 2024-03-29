@@ -3,7 +3,7 @@ class Player {
     this.pos = pos;
     this.speed = speed;
     this.velocity_y = 0;
-    this.pressed_jump = false
+    this.pressed_jump = false;
     this.is_in_air = true;
     this.jump_height = 20;
     this.scale = 0.7;
@@ -24,23 +24,49 @@ class Player {
 
   update() {
     this.process_input();
-    this.pos.y -= this.velocity_y * deltaTime * this.speed;
-    this.velocity_y -= GRAVITY * deltaTime * this.speed;
-    if (this.pos.y >= GROUND_HEIGHT) {
-      this.pos.y = GROUND_HEIGHT;
-      this.is_in_air = false;
-      this.velocity_y = 0;
+
+    if (this.pos.y > GROUND_HEIGHT) {
+      this.is_in_air = true
+    }
+    if (this.pos.y > CANVAS_HEIGHT + 200) {
+      this.pos.y = -200
     }
 
-    if (this.velocity_y == 0) {
-      this.current_sprite = this.jumpingSprites[0];
-    } else if (Math.abs(this.velocity_y) < 9) {
+    let tileAt = null;
+    for (let i = 0; i < world.tiles.length; i++) {
+      let tile = world.tiles[i];
+      if (this.pos.x >= tile.x1 && this.pos.x <= tile.x2) {
+        tileAt = tile;
+        break;
+      }
+    }
+    let lastY = this.pos.y
+    this.pos.y -= this.velocity_y * deltaTime * this.speed;
+    this.velocity_y -= GRAVITY * deltaTime * this.speed;
+
+    if (tileAt != null) {
+      if (
+        this.pos.y >
+        GROUND_HEIGHT && lastY <= GROUND_HEIGHT
+      ) {
+        this.pos.y = GROUND_HEIGHT;
+        this.is_in_air = false
+        this.velocity_y = 0;
+      }
+    }
+
+    let vel = Math.abs(this.velocity_y)
+    if (this.is_in_air) {
+    if (vel < 9) {
       this.current_sprite = this.jumpingSprites[3];
-    } else if (Math.abs(this.velocity_y) < 16) {
+    } else if (vel < 16) {
       this.current_sprite = this.jumpingSprites[2];
     } else {
       this.current_sprite = this.jumpingSprites[1];
     }
+  } else {
+    this.current_sprite = this.jumpingSprites[0];
+  }
   }
 
   process_input() {

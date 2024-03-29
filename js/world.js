@@ -8,7 +8,7 @@ class Tile {
 class World {
   constructor(groundTexture, backgrounds, groundScrollSpeed) {
     this.tiles = [];
-    this.minWidthFactor = 0.2;
+    this.minWidthFactor = 0.9;
     this.randWidthFactor = 1.0 - this.minWidthFactor;
     this.minHoleWidth = 60;
     this.maxHoleWidth = 150;
@@ -31,7 +31,7 @@ class World {
       this.generateTiles(this.tiles[this.tiles.length - 1].x2)
       if (this.tiles[0].x2 < 0) this.tiles.shift();
     } else {
-      this.generateTiles(-this.maxHoleWidth)
+      this.generateTiles(0)
     }
 
     // Move the ground tiles

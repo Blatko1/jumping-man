@@ -12,7 +12,7 @@ let player = new Player({ x: 100, y: -400 }, 30, jumpSprites, null);
 
 const groundTexture = document.getElementById("ground");
 const backgrounds = document.getElementsByClassName("background");
-let world = new World(groundTexture, backgrounds, 300);
+let world = new World(groundTexture, backgrounds, 250);
 
 let lastTime = performance.now();
 let deltaTime = 1;
