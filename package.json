@@ -1,5 +1,5 @@
 {
-  "name": "jumping-man",
+  "name": "panorunner",
   "version": "1.0.0",
   "description": "Simple JavaScipt game for school",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Blatko1/jumping-man.git"
+    "url": "git+https://github.com/Blatko1/panorunner.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Blatko1/jumping-man/issues"
+    "url": "https://github.com/Blatko1/panorunner/issues"
   },
-  "homepage": "https://github.com/Blatko1/jumping-man#readme",
+  "homepage": "https://github.com/Blatko1/panorunner#readme",
   "devDependencies": {
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
