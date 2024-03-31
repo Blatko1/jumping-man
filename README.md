@@ -1,3 +1,2 @@
-# Jumping man
-
+# Panorunner
 A JavaScript game
